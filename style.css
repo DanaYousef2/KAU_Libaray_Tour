@@ -1,5 +1,5 @@
 
-   body {
+  body {
   margin: 0;
   font-family: 'Cairo', sans-serif;
   display: flex;
@@ -91,7 +91,7 @@ iframe {
   }
 
   .floor-button {
-    flex: 1 1 45%;
+    flex: 1 1 40%;
     margin: 5px;
     font-size: 14px;
   }
@@ -100,12 +100,12 @@ iframe {
     padding: 10px;
   }
 
-  .main h1 {
-    font-size: 20px;
-  }
-
   .viewer {
     height: 60vh;
     margin-top: 10px;
+  }
+
+  .main h1 {
+    font-size: 18px;
   }
 }
