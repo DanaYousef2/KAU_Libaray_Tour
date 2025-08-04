@@ -3,9 +3,9 @@
   margin: 0;
   font-family: 'Cairo', sans-serif;
   display: flex;
+  flex-direction: row;
   height: 100vh;
   overflow: hidden;
-  flex-direction: row;
 }
 
 .sidebar {
@@ -51,8 +51,8 @@
 .main h1 {
   color: #2b4144;
   margin-bottom: 20px;
+  font-size: 22px;
   text-align: center;
-  font-size: 24px;
 }
 
 .viewer {
@@ -68,7 +68,6 @@ iframe {
   height: 100%;
   border: none;
 }
-
 
 @media (max-width: 768px) {
   body {
@@ -91,8 +90,8 @@ iframe {
   }
 
   .floor-button {
-    flex: 1 1 40%;
     margin: 5px;
+    flex: 1 0 40%;
     font-size: 14px;
   }
 
@@ -101,11 +100,7 @@ iframe {
   }
 
   .viewer {
-    height: 60vh;
+    height: 70vh;
     margin-top: 10px;
-  }
-
-  .main h1 {
-    font-size: 18px;
   }
 }
