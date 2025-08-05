@@ -123,32 +123,16 @@
   // Set up fullscreen mode, if supported.
   if (screenfull.enabled && data.settings.fullscreenButton) {
     document.body.classList.add('fullscreen-enabled');
-fullscreenToggleElement.addEventListener('click', function () {
-  var pano = document.getElementById('pano');
-  if (
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.msFullscreenElement
-  ) {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    }
-    fullscreenToggleElement.classList.remove('enabled');
-  } else {
-    if (pano.requestFullscreen) {
-      pano.requestFullscreen();
-    } else if (pano.webkitRequestFullscreen) {
-      pano.webkitRequestFullscreen();
-    } else if (pano.msRequestFullscreen) {
-      pano.msRequestFullscreen();
-    }
-    fullscreenToggleElement.classList.add('enabled');
-  }
-});
+fullscreenToggleElement.addEventListener('click', function() {
+      screenfull.toggle();
+    });
+    screenfull.on('change', function() {
+      if (screenfull.isFullscreen) {
+        fullscreenToggleElement.classList.add('enabled');
+      } else {
+        fullscreenToggleElement.classList.remove('enabled');
+      }
+    });
     
   } else {
     document.body.classList.add('fullscreen-disabled');
