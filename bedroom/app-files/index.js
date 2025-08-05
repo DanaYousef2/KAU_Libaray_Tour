@@ -123,11 +123,13 @@
   // Set up fullscreen mode, if supported.
   if (screenfull.enabled && data.settings.fullscreenButton) {
     document.body.classList.add('fullscreen-enabled');
-   fullscreenToggleElement.addEventListener('click', function () {
-  var elem = document.documentElement;
-
-  if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
-    // الخروج من الفل سكرين
+fullscreenToggleElement.addEventListener('click', function () {
+  var pano = document.getElementById('pano');
+  if (
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.msFullscreenElement
+  ) {
     if (document.exitFullscreen) {
       document.exitFullscreen();
     } else if (document.webkitExitFullscreen) {
@@ -137,16 +139,15 @@
     }
     fullscreenToggleElement.classList.remove('enabled');
   } else {
-    // الدخول في الفل سكرين
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen(); // Safari
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen(); // IE11
+    if (pano.requestFullscreen) {
+      pano.requestFullscreen();
+    } else if (pano.webkitRequestFullscreen) {
+      pano.webkitRequestFullscreen();
+    } else if (pano.msRequestFullscreen) {
+      pano.msRequestFullscreen();
     }
     fullscreenToggleElement.classList.add('enabled');
-  }
+  }
 });
     
   } else {
