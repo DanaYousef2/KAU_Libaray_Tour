@@ -148,13 +148,7 @@
     fullscreenToggleElement.classList.add('enabled');
   }
 });
-    screenfull.on('change', function() {
-      if (screenfull.isFullscreen) {
-        fullscreenToggleElement.classList.add('enabled');
-      } else {
-        fullscreenToggleElement.classList.remove('enabled');
-      }
-    });
+  
   } else {
     document.body.classList.add('fullscreen-disabled');
   }
