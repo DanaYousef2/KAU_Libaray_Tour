@@ -99,7 +99,7 @@ body.multiple-scenes.mobile #titleBar {
   display: block;
   position: absolute;
   top: 0;
-  right: 50px;
+  right: 0;
   width: 40px;
   height: 40px;
   padding: 5px;
@@ -168,7 +168,7 @@ body.fullscreen-enabled #autorotateToggle {
 }
 
 body.fullscreen-enabled.mobile #autorotateToggle {
-  right: 50px;
+  right: 0;
 }
 
 #autorotateToggle .icon {
