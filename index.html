@@ -2,13 +2,13 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>الجولة الإفتراضية للمكتبة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الجولة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="top-bar">
+  <div class="dropdown-container">
     <select onchange="loadTour(this.value)">
       <option disabled selected>اختر الدور</option>
       <option value="bedroom/app-files/index.html">البدروم</option>
@@ -18,25 +18,15 @@
       <option value="floor4/app-files/index.html">الدور الرابع</option>
       <option value="floor5/app-files/index.html">الدور الخامس</option>
     </select>
-    <h1 id="floorTitle">الجولة الإفتراضية للمكتبة</h1>
   </div>
 
-  <div class="viewer">
-    <iframe id="tourFrame" src=""></iframe>
-  </div>
+  <iframe id="tourFrame" src=""></iframe>
 
   <script>
     function loadTour(path) {
-      const titleMap = {
-        'bedroom/app-files/index.html': 'البدروم',
-        'floor1/app-files/index.html': 'الدور الأول',
-        'floor2/app-files/index.html': 'الدور الثاني',
-        'floor3/app-files/index.html': 'الدور الثالث',
-        'floor4/app-files/index.html': 'الدور الرابع',
-        'floor5/app-files/index.html': 'الدور الخامس'
-      };
-      document.getElementById('tourFrame').src = path;
-      document.getElementById('floorTitle').innerText = titleMap[path] || 'جولة المكتبة';
+      const frame = document.getElementById('tourFrame');
+      // تسريع التبديل عبر تغيير src مباشرة بدون انتظار إعادة تحميل ثقيل
+      frame.src = path;
     }
   </script>
 </body>
