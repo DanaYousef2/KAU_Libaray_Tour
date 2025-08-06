@@ -6,12 +6,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body onload="loadTour('bedroom/app-files/index.html'); document.querySelector('select').value='bedroom/app-files/index.html';"></bodyonload>
 
   <!-- DropDown for floors -->
   <div class="dropdown-container">
     <select onchange="loadTour(this.value)">
-     
       <option value="bedroom/app-files/index.html">البدروم</option>
       <option value="floor1/app-files/index.html">الدور الأول</option>
       <option value="floor2/app-files/index.html">الدور الثاني</option>
