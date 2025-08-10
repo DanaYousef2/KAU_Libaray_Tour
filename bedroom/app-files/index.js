@@ -120,37 +120,41 @@
   // Set handler for autorotate toggle.
   autorotateToggleElement.addEventListener('click', toggleAutorotate);
 
- // Fullscreen (works in Safari/Chrome/Edge/Firefox)
-document.body.classList.add('fullscreen-enabled');
-
-function isFullscreen() {
-  return document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
-}
-
-function enterFs(el) {
-  if (el.requestFullscreen) el.requestFullscreen();
-  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();      // Safari
-  else if (el.msRequestFullscreen) el.msRequestFullscreen();              // IE11
-}
-
-function exitFs() {
-  if (document.exitFullscreen) document.exitFullscreen();
-  else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); // Safari
-  else if (document.msExitFullscreen) document.msExitFullscreen();
-}
-
-fullscreenToggleElement.addEventListener('click', function () {
+  // Set up fullscreen mode, if supported.
+  if (screenfull.enabled && data.settings.fullscreenButton) {
+    document.body.classList.add('fullscreen-enabled');
+   fullscreenToggleElement.addEventListener('click', function () {
   const pano = document.getElementById('pano');
-  if (isFullscreen()) exitFs();
-  else enterFs(pano);
-});
 
-['fullscreenchange','webkitfullscreenchange','MSFullscreenChange'].forEach(evt => {
-  document.addEventListener(evt, () => {
-    if (isFullscreen()) fullscreenToggleElement.classList.add('enabled');
-    else fullscreenToggleElement.classList.remove('enabled');
-  });
+  // إذا كنا بالفعل داخل الفل سكرين نخرج منه
+  if (
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.msFullscreenElement
+  ) {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+    fullscreenToggleElement.classList.remove('enabled');
+  } else {
+    // ندخل الفل سكرين بناءً على المتصفح
+    if (pano.requestFullscreen) {
+      pano.requestFullscreen();
+    } else if (pano.webkitRequestFullscreen) {
+      pano.webkitRequestFullscreen(); // Safari
+    } else if (pano.msRequestFullscreen) {
+      pano.msRequestFullscreen(); // IE11
+    }
+    fullscreenToggleElement.classList.add('enabled');
+  }
 });
+  } else {
+    document.body.classList.add('fullscreen-disabled');
+  }
 
   // Set handler for scene list toggle.
   sceneListToggleElement.addEventListener('click', toggleSceneList);
@@ -200,8 +204,7 @@ fullscreenToggleElement.addEventListener('click', function () {
   function switchScene(scene) {
     stopAutorotate();
     scene.view.setParameters(scene.data.initialViewParameters);
-    scene.load();
-    scene.scene.switchTo({ transitionDuration: 1500 });
+    scene.scene.switchTo();
     startAutorotate();
     updateSceneName(scene);
     updateSceneList(scene);
@@ -301,80 +304,82 @@ fullscreenToggleElement.addEventListener('click', function () {
   }
 
   function createInfoHotspotElement(hotspot) {
+
     // Create main wrapper
     var wrapper = document.createElement('div');
     wrapper.classList.add('hotspot');
     wrapper.classList.add('info-hotspot');
-  
+
     // Header section
     var header = document.createElement('div');
     header.classList.add('info-hotspot-header');
-  
+
     var iconWrapper = document.createElement('div');
     iconWrapper.classList.add('info-hotspot-icon-wrapper');
     var icon = document.createElement('img');
     icon.src = 'img/info.png';
     icon.classList.add('info-hotspot-icon');
     iconWrapper.appendChild(icon);
-  
+
     var titleWrapper = document.createElement('div');
     titleWrapper.classList.add('info-hotspot-title-wrapper');
     var title = document.createElement('div');
     title.classList.add('info-hotspot-title');
     title.innerHTML = hotspot.title;
     titleWrapper.appendChild(title);
-  
+
     var closeWrapper = document.createElement('div');
     closeWrapper.classList.add('info-hotspot-close-wrapper');
     var closeIcon = document.createElement('img');
     closeIcon.src = 'img/close.png';
     closeIcon.classList.add('info-hotspot-close-icon');
     closeWrapper.appendChild(closeIcon);
-  
+
     header.appendChild(iconWrapper);
     header.appendChild(titleWrapper);
     header.appendChild(closeWrapper);
-  
+
     // Content section (text + audio if exists)
     var contentWrapper = document.createElement('div');
     contentWrapper.classList.add('info-hotspot-text');
-  
+
     // Add text
     var text = document.createElement('div');
     text.innerHTML = hotspot.text;
     contentWrapper.appendChild(text);
-  
-    // Add audio directly inside the text box
+
+    // Add audio player directly under the text if exists
     if (hotspot.audio) {
-      var audio = document.createElement('audio');
-      audio.src = hotspot.audio;
-      audio.controls = true;
-      audio.style.width = '100%';
-      audio.style.marginTop = '10px';
-      contentWrapper.appendChild(audio);
+        var audio = document.createElement('audio');
+        audio.src = hotspot.audio;
+        audio.controls = true;
+        audio.style.width = '100%';
+        audio.style.marginTop = '10px';
+        contentWrapper.appendChild(audio);
     }
-  
-    // Append everything to the main wrapper
+
+    // Append header and content to main wrapper
     wrapper.appendChild(header);
     wrapper.appendChild(contentWrapper);
-  
+
     // Modal version for mobile
     var modal = document.createElement('div');
     modal.innerHTML = wrapper.innerHTML;
     modal.classList.add('info-hotspot-modal');
     document.body.appendChild(modal);
-  
+
     var toggle = function () {
-      wrapper.classList.toggle('visible');
-      modal.classList.toggle('visible');
+        wrapper.classList.toggle('visible');
+        modal.classList.toggle('visible');
     };
-  
+
     wrapper.querySelector('.info-hotspot-header').addEventListener('click', toggle);
     modal.querySelector('.info-hotspot-close-wrapper').addEventListener('click', toggle);
-  
+
     stopTouchAndScrollEventPropagation(wrapper);
+
     return wrapper;
-  }   
+}
 
   // Prevent touch and scroll events from reaching the parent element.
   function stopTouchAndScrollEventPropagation(element, eventList) {
