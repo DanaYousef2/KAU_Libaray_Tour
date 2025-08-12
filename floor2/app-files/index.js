@@ -123,16 +123,36 @@
   // Set up fullscreen mode, if supported.
   if (screenfull.enabled && data.settings.fullscreenButton) {
     document.body.classList.add('fullscreen-enabled');
-    fullscreenToggleElement.addEventListener('click', function() {
-      screenfull.toggle();
-    });
-    screenfull.on('change', function() {
-      if (screenfull.isFullscreen) {
-        fullscreenToggleElement.classList.add('enabled');
-      } else {
-        fullscreenToggleElement.classList.remove('enabled');
-      }
-    });
+fullscreenToggleElement.addEventListener('click', function () {
+  const pano = document.getElementById('pano');
+
+  // إذا كنا بالفعل داخل الفل سكرين نخرج منه
+  if (
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.msFullscreenElement
+  ) {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+    fullscreenToggleElement.classList.remove('enabled');
+  } else {
+    // ندخل الفل سكرين بناءً على المتصفح
+    if (pano.requestFullscreen) {
+      pano.requestFullscreen();
+    } else if (pano.webkitRequestFullscreen) {
+      pano.webkitRequestFullscreen(); // Safari
+    } else if (pano.msRequestFullscreen) {
+      pano.msRequestFullscreen(); // IE11
+    }
+    fullscreenToggleElement.classList.add('enabled');
+  }
+});
+    
   } else {
     document.body.classList.add('fullscreen-disabled');
   }
@@ -328,7 +348,7 @@
     text.innerHTML = hotspot.text;
     contentWrapper.appendChild(text);
   
-    // Add audio player directly under the text if exists
+    // Add audio directly inside the text box
     if (hotspot.audio) {
       var audio = document.createElement('audio');
       audio.src = hotspot.audio;
@@ -358,7 +378,7 @@
   
     stopTouchAndScrollEventPropagation(wrapper);
     return wrapper;
-  }  
+  }   
 
   // Prevent touch and scroll events from reaching the parent element.
   function stopTouchAndScrollEventPropagation(element, eventList) {
